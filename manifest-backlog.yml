@@ -6,7 +6,7 @@ applications:
   instances: 1
   env:
     GRANT_TYPE: client_credentials
-    REGISTRATION_SERVER_ENDPOIN: http://registration-pal-djh.apps.longs.pal.pivotal.io
+    REGISTRATION_SERVER_ENDPOINT: http://registration-pal-djh.apps.longs.pal.pivotal.io
   services:
   - tracker-backlog-database
   - tracker-service-registry

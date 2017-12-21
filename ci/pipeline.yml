@@ -4,7 +4,7 @@ resources:
   type: git
   source:
     uri: {{github-repository}}
-    branch: my-work
+    branch: master
     private_key: {{github-private-key}}
 
 - name: version
@@ -139,11 +139,12 @@ jobs:
 - name: migrate
   plan:
   - get: pal-tracker
-  passed: [deploy-allocations, deploy-backlog, deploy-registration, deploy-timesheets]
+    passed: [build]
   - task: migrate
     file: pal-tracker/ci/build-migrate.yml
     params:
       CF_USERNAME: {{cf-username}}
       CF_PASSWORD: {{cf-password}}
-      CF_DATABASE: {{cf-database}}
       CF_ORG: {{cf-org}}
+      CF_SPACE: {{cf-space}}
+      CF_API_URL: {{cf-api-url}}

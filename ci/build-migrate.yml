@@ -1,0 +1,34 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: openjdk
+    tag: '8-jdk'
+
+inputs:
+- name: pal-tracker
+
+run:
+  path: bash
+  args:
+    - -exc
+    - |
+      export DEBIAN_FRONTEND="noninteractive"
+      apt-get update
+      apt-get -y install apt-transport-https ca-certificates
+
+      wget -q -O - http://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | apt-key add -
+      echo "deb http://packages.cloudfoundry.org/debian stable main" | tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+
+      apt-get update
+      apt-get -y install cf-cli
+
+      cd pal-tracker
+
+      cf api $CF_API_URL
+      cf auth $CF_USERNAME $CF_PASSWORD
+      cf target -o $CF_ORG -s $CF_SPACE
+
+      ./gradlew cfMigrate

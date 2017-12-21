@@ -135,3 +135,15 @@ jobs:
       manifest: pal-tracker/manifest-timesheets.yml
       path: timesheets-artifacts/timesheets-server*.jar
       current_app_name: tracker-timesheets
+
+- name: migrate
+  plan:
+  - get: pal-tracker
+  passed: [deploy-allocations, deploy-backlog, deploy-registration, deploy-timesheets]
+  - task: migrate
+    file: pal-tracker/ci/build-migrate.yml
+    params:
+      CF_USERNAME: {{cf-username}}
+      CF_PASSWORD: {{cf-password}}
+      CF_DATABASE: {{cf-database}}
+      CF_ORG: {{cf-org}}

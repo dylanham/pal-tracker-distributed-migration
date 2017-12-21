@@ -1,0 +1,17 @@
+---
+resources:
+- name: pal-tracker
+  type: git
+  source:
+    uri: {{github-repository}}
+    branch: my-work
+    private_key: {{github-private-key}}
+
+jobs:
+- name: migrate
+  plan:
+  - get: pal-tracker
+  - task: migrate-db
+    file: pal-tracker/ci/build-migrate.yml
+
+
